@@ -1,4 +1,6 @@
 glwrap
+bin/*
 ressources/*
 shaders/*
 test_*
+main*
