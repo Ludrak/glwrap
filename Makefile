@@ -26,7 +26,7 @@ CLANG		=	clang++ -DGL_SILENCE_DEPRECATION
 CPP_FLAGS	=	-Wextra -Wall -Werror -std=c++98 -g3 -fsanitize=address
 CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%) -I./lib/glm/
 
-CPP_LFLAGS	=   -lglfw -lGLEW -L./lib/noise -lopensimplexnoise
+CPP_LFLAGS	=   -lglfw -lGLEW
 CPP_FRAMEWORKS = -framework OpenGL -framework CoreVideo -framework IOKit -framework Cocoa -framework Carbon
 
 # Fancy prefixes 
