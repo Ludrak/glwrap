@@ -1,7 +1,7 @@
 .PHONY: clean fclean re all check_sources check_headers
 
 # Name of target executable
-NAME		= glwrap.a
+NAME		= libglwrap.a
 
 # Locations 
 SRC_DIR		= src
