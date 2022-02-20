@@ -1,7 +1,7 @@
 .PHONY: clean fclean re all check_sources check_headers
 
 # Name of target executable
-NAME		= glwrap
+NAME		= glwrap.a
 
 # Locations 
 SRC_DIR		= src
@@ -15,7 +15,7 @@ LIB_DIR		=
 # - fill only with name of the file
 # - make will check for the file in SRC_DIR
 # - use "-" if empty
-SRCS=				Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp Camera.cpp main.cpp
+SRCS=				Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp Camera.cpp
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= glm 
@@ -24,7 +24,7 @@ OPENGL_PATH=/opt/local/include/GL /opt/local/include/GLFW
 
 CLANG		=	clang++ -DGL_SILENCE_DEPRECATION
 CPP_FLAGS	=	-Wextra -Wall -Werror -std=c++98 -g3 -fsanitize=address
-CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%) -I./lib/glm/ -I./lib/noise/inc 
+CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%) -I./lib/glm/
 
 CPP_LFLAGS	=   -lglfw -lGLEW -L./lib/noise -lopensimplexnoise
 CPP_FRAMEWORKS = -framework OpenGL -framework CoreVideo -framework IOKit -framework Cocoa -framework Carbon
@@ -90,7 +90,9 @@ check_headers:
 
 #	Linking rule
 $(NAME): $(BIN_DIR) $(OBJS)
-	@$(CLANG) $(OBJS) -o $(NAME) $(CPP_FLAGS) $(CPP_LFLAGS) $(CPP_FRAMEWORKS)
+#	compilation
+# 	@$(CLANG) $(OBJS) -o $(NAME) $(CPP_FLAGS) $(CPP_LFLAGS) $(CPP_FRAMEWORKS)
+	@ar -rcs $(NAME) $(OBJS)
 	@echo "$(PREFIX_PROJECT)$(PREFIX_LINK) Linking done for: $(NAME)"
 
 #	Bin directory
