@@ -4,9 +4,6 @@
 
 # include "Logger.hpp"
 
-// enabling 
-# define GLW_DEBUG
-
 /* define GLW_DEBUG to run in debug mode*/
 # ifdef GLW_DEBUG
 
