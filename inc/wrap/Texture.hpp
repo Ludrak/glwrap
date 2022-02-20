@@ -36,7 +36,6 @@ namespace glw
             int     _width;
             int     _height;
             int     _n_channels;
-
     };
 }
 

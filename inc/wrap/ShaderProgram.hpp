@@ -4,6 +4,9 @@
 
 # include "util/utils.hpp"
 
+# include <glm/glm.hpp>
+# include <glm/gtc/matrix_transform.hpp>
+# include <glm/gtc/type_ptr.hpp>
 # include <GL/glew.h>
 
 # include <vector>
@@ -64,6 +67,33 @@ namespace glw
             void    setUniform4fv (const std::string& name, GLsizei count, float *value);
             void    setUniform4dv (const std::string& name, GLsizei count, double *value);
             void    setUniform4uiv(const std::string& name, GLsizei count, unsigned int *value);
+
+            void    setUniformMatrix2dv(const std::string &name, glm::mat2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix2fv(const std::string &name, glm::mat2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix2x3dv(const std::string &name, glm::mat2x3 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix2x3fv(const std::string &name, glm::mat2x3 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix2x4dv(const std::string &name, glm::mat2x4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix2x4fv(const std::string &name, glm::mat2x4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix3dv(const std::string &name, glm::mat3 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix3fv(const std::string &name, glm::mat3 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix3x2dv(const std::string &name, glm::mat3x2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix3x2fv(const std::string &name, glm::mat3x2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix3x4dv(const std::string &name, glm::mat3x4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix3x4fv(const std::string &name, glm::mat3x4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix4dv(const std::string &name, glm::mat4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix4fv(const std::string &name, glm::mat4 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix4x2dv(const std::string &name, glm::mat4x2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix4x2fv(const std::string &name, glm::mat4x2 mat, GLsizei count, GLenum transpose=GL_FALSE);
+
+            void    setUniformMatrix4x3dv(const std::string &name, glm::mat4x3 mat, GLsizei count, GLenum transpose=GL_FALSE);
+            void    setUniformMatrix4x3fv(const std::string &name, glm::mat4x3 mat, GLsizei count, GLenum transpose=GL_FALSE);
 
         private:
             GLuint              _program;

@@ -23,7 +23,10 @@ bool    glw::Texture::load(const std::string& filename, GLenum target)
     this->_tex_target = target;
     unsigned char* data = stbi_load(filename.c_str(), &this->_width, &this->_height, &this->_n_channels, 0);
     if (!data)
+    {
+        LOG_ERROR("unable to load texture: " << filename);
         return (false);
+    }
 
     glGenTextures(1, &this->_tex);
     GLW_ERROR("glGenTextures", 1 << ", " << &this->_tex)
@@ -55,6 +58,11 @@ void    glw::Texture::paramFilter(GLenum min_filter, GLenum mag_filter)
 
 void    glw::Texture::activate(GLenum texture_id)
 {
+    if (texture_id >= GL_MAX_TEXTURE_UNITS)
+    {
+        LOG_ERROR("texture unit overflow: loading texture: GL_TEXTURE" << texture_id - GL_TEXTURE0 << " but maximum is " << GL_MAX_TEXTURE_UNITS - GL_TEXTURE0 - 1);
+        return ;
+    }
     glActiveTexture(texture_id);
     GLW_ERROR("glActiveTexture", texture_id)
     this->bind();

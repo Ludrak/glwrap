@@ -346,3 +346,35 @@ void    glw::ShaderProgram::setUniform4uiv(const std::string& name, GLsizei coun
 	glUniform4uiv(glGetUniformLocation(this->_program, name.c_str()), count, value);
 	//GLW_ERROR("glUniform4ui");
 }
+
+/*
+void    glw::ShaderProgram::setUniformMatrix2dv(const std::string &name, glm::mat2 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix2dv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}*/
+
+void    glw::ShaderProgram::setUniformMatrix2fv(const std::string &name, glm::mat2 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix2fv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}
+/*
+void    glw::ShaderProgram::setUniformMatrix3dv(const std::string &name, glm::mat3 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix3dv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}*/
+
+void    glw::ShaderProgram::setUniformMatrix3fv(const std::string &name, glm::mat3 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix3fv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}
+/*
+void    glw::ShaderProgram::setUniformMatrix4dv(const std::string &name, glm::mat4 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix4dv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}*/
+
+void    glw::ShaderProgram::setUniformMatrix4fv(const std::string &name, glm::mat4 mat, GLsizei count, GLenum transpose)
+{
+	glUniformMatrix4fv(glGetUniformLocation(this->_program, name.c_str()), count, transpose, glm::value_ptr(mat));
+}
+

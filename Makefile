@@ -15,18 +15,18 @@ LIB_DIR		=
 # - fill only with name of the file
 # - make will check for the file in SRC_DIR
 # - use "-" if empty
-SRCS=				Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp main.cpp
+SRCS=				Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp Camera.cpp main.cpp
 
 # Librarys (only for local archives in project folder)
-LIBRARYS	= 
+LIBRARYS	= glm 
 
 OPENGL_PATH=/opt/local/include/GL /opt/local/include/GLFW
 
 CLANG		=	clang++ -DGL_SILENCE_DEPRECATION
 CPP_FLAGS	=	-Wextra -Wall -Werror -std=c++98 -g3 -fsanitize=address
-CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%)
+CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%) -I./lib/glm/ -I./lib/noise/inc 
 
-CPP_LFLAGS	=   -lglfw -lGLEW 
+CPP_LFLAGS	=   -lglfw -lGLEW -L./lib/noise -lopensimplexnoise
 CPP_FRAMEWORKS = -framework OpenGL -framework CoreVideo -framework IOKit -framework Cocoa -framework Carbon
 
 # Fancy prefixes 

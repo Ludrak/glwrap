@@ -3,7 +3,17 @@
 #include "Window.hpp"
 
 glw::Window::Window(const unsigned int width, const unsigned int height, const std::string title)
-: _window(NULL), _width(width), _height(height), _title(title)
+:	_window(NULL),
+	_width(width),
+	_height(height),
+	_title(title),
+	_on_key_pressed(NULL),
+	_on_key_released(NULL),
+	_on_mouse_pressed(NULL),
+	_on_mouse_released(NULL),
+	_on_mouse_moved(NULL),
+	_on_mouse_scrolled(NULL)
+
 {
   //  this->_on_load();
 }
@@ -36,6 +46,8 @@ int             glw::Window::run()
 		glfwSwapBuffers(this->_window);
 		/* Poll for and process events */
 		glfwPollEvents();
+
+		glfwGetCursorPos(this->_window, &this->_mouse_x, &this->_mouse_y);
 	}
     return (0);
 }
@@ -50,27 +62,11 @@ unsigned int    glw::Window::getHeight(void) const
     return (this->_height);
 }
 
-/* to override */
-void            glw::Window::onKeyPressed(unsigned int key)
-{(void)key;}
-
-void            glw::Window::onKeyReleased(unsigned int key)
-{(void)key;}
 
 
-void            glw::Window::onMousePressed(unsigned int key)
-{(void)key;}
 
-void            glw::Window::onMouseReleased(unsigned int key)
-{(void)key;}
 
-void            glw::Window::onMouseMoved(unsigned int key)
-{(void)key;}
-
-void            glw::Window::onMouseScrolled(unsigned int key)
-{(void)key;}
-
-void            glw::Window::setEvent(int event, event_func func)
+void            glw::Window::mapEvent(int event, void (*func)(void))
 {
     switch (event)
     {
@@ -87,6 +83,83 @@ void            glw::Window::setEvent(int event, event_func func)
 }
 
 
+void            glw::Window::mapInputEvent(int event, void (*func)(int))
+{
+	static bool key_event_set = false;
+	static bool mouse_event_set = false;
+
+    switch (event)
+    {
+		case WIN_KEYPRESS:
+			LOG_INFO("hooked keypress input event")
+			this->_on_key_pressed = func;
+			if (!key_event_set)
+			{
+				glfwSetKeyCallback(this->_window, &glw::key_callback);
+				key_event_set = true;
+			}
+			break;
+		case WIN_KEYRELEASE:
+			LOG_INFO("hooked keyrelease input event")
+			this->_on_key_released = func;
+			if (!key_event_set)
+			{
+				glfwSetKeyCallback(this->_window, &glw::key_callback);
+				key_event_set = true;
+			}
+			break;
+		case WIN_MOUSEPRESS:
+			LOG_INFO("hooked mousepress input event")
+			this->_on_mouse_pressed = func;
+			if (!mouse_event_set)
+			{
+				glfwSetMouseButtonCallback(this->_window, &glw::mouse_button_callback);
+				mouse_event_set = true;
+			}
+			break;
+		case WIN_MOUSERELEASE:
+			LOG_INFO("hooked mouserelease input event")
+			this->_on_mouse_released = func;
+			if (!mouse_event_set)
+			{
+				glfwSetMouseButtonCallback(this->_window, &glw::mouse_button_callback);
+				mouse_event_set = true;
+			}
+			break;
+    }
+}
+
+
+void            glw::Window::mapInputEvent(int event, void (*func)(double, double))
+{
+    switch (event)
+    {
+		case WIN_MOUSEMOVE:
+			this->_on_mouse_moved = func;
+			break;
+		case WIN_MOUSESCROLL:
+			LOG_INFO("hooked mousescroll input event")
+			this->_on_mouse_scrolled = func;
+			glfwSetScrollCallback(this->_window, &glw::mouse_scroll_callback);
+			break;
+    }
+}
+
+
+double          glw::Window::getMouseX(void) const
+{
+	return  (this->_mouse_x);
+}
+
+double          glw::Window::getMouseY(void) const
+{
+	return  (this->_mouse_y);
+}
+
+
+
+
+
 int             glw::Window::init(void)
 {
 	stbi_set_flip_vertically_on_load(true);  
@@ -98,8 +171,8 @@ int             glw::Window::init(void)
 	}
 
 #ifdef __APPLE__
-  	glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-  	glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
+  	glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
+  	glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 1);
   	glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   	glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
@@ -129,11 +202,11 @@ int             glw::Window::init(void)
 		return (1);
 	}
 
+	glfwSetWindowUserPointer(this->_window, this);
+
 	LOG_INFO("initalized GLEW (v" << glewGetString(GLEW_VERSION) << ")");
     glw::Logger::info("executing load");
     if (this->_on_load)
         this->_on_load();
     return (0);
 }
-
-

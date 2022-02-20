@@ -4,16 +4,14 @@
 glw::VertexArray::VertexArray()
 :   
     _buffers(),
-    _bound_buffer(NULL),
-    _shader(NULL)
+    _bound_buffer(NULL)
 {
 }
 
 glw::VertexArray::VertexArray(const VertexArray &copy)
 :   _vao(copy._vao),
     _buffers(copy._buffers),
-    _bound_buffer(copy._bound_buffer),
-    _shader(copy._shader)
+    _bound_buffer(copy._bound_buffer)
 {
 
 }
@@ -91,23 +89,7 @@ void            glw::VertexArray::disableAttrib(GLuint location)
 
 void    glw::VertexArray::draw()
 {
-    this->_shader->use();
-    this->onShaderUse();
-	
     this->bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
+	glDrawElements(GL_TRIANGLES, this->_buffers[this->_indices_buffer]->size, GL_UNSIGNED_SHORT, (void*)0);
     GLW_ERROR("glDrawElements", GL_TRIANGLES << ", " << 6 << ", " << GL_UNSIGNED_SHORT << ", " << (void*)0);
-}
-
-
-void    glw::VertexArray::setShader(ShaderProgram *shader)
-{
-    this->_shader = shader;
-}
-
-
-void    glw::VertexArray::onShaderUse()
-{
-    this->_shader->setUniform1f("time", glfwGetTime());
-    glBindTexture(GL_TEXTURE_2D, 1);
 }

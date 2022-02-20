@@ -51,18 +51,15 @@ namespace glw
             void            addTexture(const Texture &tex);
             void            delTexture(const Texture &tex);
 
-            void            setShader(ShaderProgram *shader);
-            virtual void    onShaderUse(void);
-
             virtual void    draw(void);
         
         private:
             GLuint                          _vao;
 
             std::map<int, VertexBuffer*>    _buffers;
+            int                             _indices_buffer;
+            int                             _vertices_buffer;
             VertexBuffer*                   _bound_buffer;
-
-            ShaderProgram*                  _shader;
     };
 
     template <typename T>
@@ -84,6 +81,10 @@ namespace glw
         GLW_ERROR("glBufferData", target << ", " << size << ", " << (void*)data << ", " << usage);
 
         this->_buffers[idx] = new VertexBuffer(buffered_data, type, sizeof(T), size);
+        if (target == GL_ELEMENT_ARRAY_BUFFER)
+            this->_indices_buffer = idx;
+        else if (target == GL_ARRAY_BUFFER)
+            this->_vertices_buffer = idx;
         return (buffered_data);
     }
 
