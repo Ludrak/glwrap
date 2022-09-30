@@ -34,7 +34,7 @@ namespace glw
             typedef void    (*input_event_mouse_func)(const int button);
             typedef void    (*input_event_mouse_diff_func)(const double xoff, const double yoff);
 
-            Window(const unsigned int width=1280, const unsigned int height=720, const std::string title="glwrap");
+            Window(const unsigned int width=1280, const unsigned int height=720, const std::string& title="glwrap");
             virtual ~Window();
 
             void            mapEvent(int event, void (*func)(void));
@@ -46,6 +46,10 @@ namespace glw
 
             unsigned int    getWidth(void) const;
             unsigned int    getHeight(void) const;
+
+            int             getFPS(void) const;
+
+            void            setTitle(const std::string &title);
 
             double          getMouseX(void) const;
             double          getMouseY(void) const;
@@ -62,7 +66,12 @@ namespace glw
             unsigned int        _height;
             double              _mouse_x;
             double              _mouse_y;
-            const std::string   _title;
+            std::string         _title;
+
+            int                 _fps;
+            int                 _frames;
+            struct timeval      _current_time;
+            struct timeval      _last_time;
 
             event_func          _on_load;
             event_func          _on_setup;

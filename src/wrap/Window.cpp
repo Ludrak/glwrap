@@ -1,8 +1,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Window.hpp"
+#include <sys/time.h>
 
-glw::Window::Window(const unsigned int width, const unsigned int height, const std::string title)
+glw::Window::Window(const unsigned int width, const unsigned int height, const std::string &title)
 :	_window(NULL),
 	_width(width),
 	_height(height),
@@ -30,10 +31,20 @@ int             glw::Window::run()
         this->_on_setup();
 
     glw::Logger::info("running window");
-
+	
+	gettimeofday(&this->_last_time, NULL);
     /* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(this->_window))
 	{
+		gettimeofday(&this->_current_time, NULL);
+		if ((this->_current_time.tv_usec - this->_last_time.tv_usec + 
+		   ((this->_current_time.tv_sec - this->_last_time.tv_sec) & 0xFF) * 1000000) > 1000000)
+		{
+			this->_last_time = this->_current_time;
+			this->_fps = this->_frames;
+			this->_frames = 0;
+		}
+
 		/* Clears previous buffers */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -48,6 +59,7 @@ int             glw::Window::run()
 		glfwPollEvents();
 
 		glfwGetCursorPos(this->_window, &this->_mouse_x, &this->_mouse_y);
+		++this->_frames;
 	}
     return (0);
 }
@@ -62,8 +74,17 @@ unsigned int    glw::Window::getHeight(void) const
     return (this->_height);
 }
 
+int             glw::Window::getFPS(void) const
+{
+	return (this->_fps);
+}
 
 
+void			glw::Window::setTitle(const std::string& new_title)
+{
+	glfwSetWindowTitle(this->_window, new_title.c_str());
+	this->_title = new_title;
+}
 
 
 void            glw::Window::mapEvent(int event, void (*func)(void))
