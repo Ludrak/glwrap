@@ -8,7 +8,7 @@
 # include <string>
 # include <iostream>
 
-# include "stbi_image.h"
+# include "util/stbi_image.h"
 
 # include "util/utils.hpp"
 

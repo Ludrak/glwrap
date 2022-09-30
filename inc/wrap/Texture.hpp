@@ -2,7 +2,7 @@
 #ifndef  GLWTEXTURE_HPP
 # define GLWTEXTURE_HPP
 
-# include "utils.hpp"
+# include "util/utils.hpp"
 
 # include <string>
 # include <GL/glew.h>
@@ -10,7 +10,7 @@
 
 //# ifndef STB_IMAGE_IMPLEMENTATION
 //#  define STB_IMAGE_IMPLEMENTATION
-# include "stbi_image.h"
+# include "util/stbi_image.h"
 //# endif
 
 namespace glw

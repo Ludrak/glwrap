@@ -2,7 +2,7 @@
 #ifndef GLWVERTEX_ARRAY_HPP
 # define GLWVERTEX_ARRAY_HPP
 
-# include "utils.hpp"
+# include "util/utils.hpp"
 # include "ShaderProgram.hpp"
 # include "Texture.hpp"
 
