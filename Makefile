@@ -15,18 +15,18 @@ LIB_DIR		=
 # - fill only with name of the file
 # - make will check for the file in SRC_DIR
 # - use "-" if empty
-SRCS=				Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp Camera.cpp
+SRCS=		Window.cpp ShaderProgram.cpp VertexArray.cpp Texture.cpp Logger.cpp Camera.cpp
 
 # Librarys (only for local archives in project folder)
-LIBRARYS	= glm 
+LIBRARYS	  = glm 
+EXTERNAL_LIBS = glfw GLEW
 
 OPENGL_PATH=/opt/local/include/GL /opt/local/include/GLFW
 
 CLANG		=	clang++ -DGL_SILENCE_DEPRECATION
-CPP_FLAGS	=	-Wextra -Wall -Werror -std=c++98 -g3 -fsanitize=address
+CPP_FLAGS	=	-Wextra -Wall -Werror -std=c++98
 CPP_IFLAGS	=	$(OPENGL_PATH:%=-I%) -I./lib/glm/
 
-CPP_LFLAGS	=   -lglfw -lGLEW
 CPP_FRAMEWORKS = -framework OpenGL -framework CoreVideo -framework IOKit -framework Cocoa -framework Carbon
 
 # Fancy prefixes 
@@ -46,7 +46,7 @@ SRC_FILES	=	$(shell find $(SRC_DIR) | grep -v "$(IGNORED_SRC)" | grep -E '$(shel
 HEADER_FILES=	$(shell find $(INC_DIR) | grep -E '$(shell echo $(HEADERS) | tr ' ' '|')')
 OBJS		=	$(addprefix $(BIN_DIR)/, $(SRC_FILES:.cpp=.o))
 CPP_IFLAGS	+=	$(addprefix -I,$(INC_DIR)) $(addprefix -I,$(shell echo $(HEADER_FILES) | tr ' ' '\n' | rev | cut -d'/' -f2- | rev | sort | uniq))
-CPP_LFLAG	+=	$(addprefix -L,$(addprefix $(LIB_DIR), $(LIBRARYS)))
+CPP_LFLAG	+=	$(addprefix -L,$(addprefix $(LIB_DIR), $(LIBRARYS))) $(addprefix -l, $(EXTERNAL_LIBS))
 
 #   Main rule
 all: check_headers check_sources $(NAME)
@@ -90,8 +90,6 @@ check_headers:
 
 #	Linking rule
 $(NAME): $(BIN_DIR) $(OBJS)
-#	compilation
-# 	@$(CLANG) $(OBJS) -o $(NAME) $(CPP_FLAGS) $(CPP_LFLAGS) $(CPP_FRAMEWORKS)
 	@ar -rcs $(NAME) $(OBJS)
 	@echo "$(PREFIX_PROJECT)$(PREFIX_LINK) Linking done for: $(NAME)"
 
